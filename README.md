@@ -15,6 +15,12 @@ The primary descriptive question is how often Africa-site trials in this topic m
 - Median results-reporting lag days: `719.5`
 - Most represented Africa-site countries: Kenya (22), Uganda (18), Mali (17), Burkina Faso (16), Ghana (11)
 
+## Submission Track
+
+- Primary target journal: `Malaria Journal` as a `Research` article
+- Backup target journal: `Trials` if the manuscript is judged too methods-oriented for a malaria-only venue
+- Journal-specific submission files live in `submission/`
+
 ## Layout
 
 - `paper/`: E156 body, article JSON, validation record, and HTML bundle
@@ -22,6 +28,7 @@ The primary descriptive question is how often Africa-site trials in this topic m
 - `data/`: copied topic outputs from the parent analysis project
 - `code/`: local scripts needed to rerun validation and rebuild the bundle
 - `.github/workflows/`: lightweight validation workflow for GitHub-hosted use
+- `submission/`: journal-specific cover letter, abstract, title page, manuscript draft, declarations, and checklist
 - `STATUS.md`: current completion state and remaining gaps
 
 ## Quick Start
@@ -44,4 +51,5 @@ python3 code/build_e156_bundle.py --input paper/article.json --output paper/inde
 - Local HTML bundle generated
 - Protocol tightened beyond the initial skeleton
 - Local git repo initialized
-- Remote GitHub repository still needs creation if you want public hosting
+- Public GitHub repository is live at `https://github.com/mahmood726-cyber/malaria-e156`
+- Journal-specific submission package drafted for `Malaria Journal`

@@ -1,13 +1,27 @@
-# Submission Checklist
+# Submission Checklist For Malaria Journal
 
+- [x] Target journal chosen: `Malaria Journal`
+- [x] Article type chosen: `Research`
 - [x] E156 body validated locally
 - [x] HTML companion built locally
 - [x] Protocol draft present
 - [x] Data files copied into repo
 - [x] Code files copied into repo
+- [x] Journal-specific cover letter drafted
+- [x] Journal-specific title page drafted
+- [x] Structured abstract drafted
+- [x] Full manuscript draft structured to journal headings
+- [x] BMC-style declarations draft added
+- [x] Additional-files plan drafted
+- [x] Public GitHub repository available for data and code linking
 - [ ] Final author list added
-- [ ] Affiliations and ORCIDs added
-- [ ] Journal chosen
-- [ ] Cover letter finalized
-- [ ] DOI or archive link added
+- [ ] Affiliations, emails, and ORCIDs added
+- [ ] Corresponding author confirmed
+- [ ] Funding statement finalized by authors
+- [ ] Competing-interest statement finalized by authors
+- [ ] Generative-AI disclosure reviewed by authors
+- [ ] Reference list expanded if authors want a broader literature frame
+- [ ] Search archived on searchRxiv if authors want a citable search DOI
+- [ ] Zenodo or similar archive created if authors want a DOI for the repository
+- [ ] Final DOCX or LaTeX export prepared with line and page numbering
 - [ ] External read for wording and overclaim risk
