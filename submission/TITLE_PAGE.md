@@ -7,7 +7,7 @@
 
 ## Proposed Title
 
-Registry-first operational scan of Africa-site malaria randomized trials: identifying lean transfer templates for faster trial delivery
+Registry-first operational scan of completed, results-posted Africa-site malaria randomized trials: identifying lean transfer templates for future trial delivery
 
 ## Short Title
 
