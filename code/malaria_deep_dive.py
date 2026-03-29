@@ -32,6 +32,7 @@ AFRICAN_COUNTRIES = {
     "Côte d’Ivoire", "Côte d'Ivoire",
 }
 EXTERNAL_SPONSOR_CLASSES = {"INDUSTRY", "FED", "NIH", "NETWORK"}
+MALARIA_RELEVANCE_TERMS = ("malaria", "plasmodium", "falciparum", "vivax")
 
 
 def normalize(text: str | None) -> str:
@@ -90,6 +91,27 @@ def parse_pvalue(value: Any) -> float | None:
         parsed = parse_float(text[1:].strip())
         return parsed if parsed is not None else None
     return parse_float(text)
+
+
+def study_topic_text(study: dict[str, Any]) -> str:
+    protocol = study.get("protocolSection", {})
+    ident = protocol.get("identificationModule", {})
+    conditions = protocol.get("conditionsModule", {})
+    descriptions = protocol.get("descriptionModule", {})
+    text = " ".join([
+        ident.get("briefTitle", ""),
+        ident.get("officialTitle", ""),
+        " ".join(conditions.get("conditions") or []),
+        " ".join(conditions.get("keywords") or []),
+        descriptions.get("briefSummary", ""),
+        descriptions.get("detailedDescription", ""),
+    ])
+    return normalize(text)
+
+
+def is_malaria_relevant(study: dict[str, Any]) -> bool:
+    text = study_topic_text(study)
+    return any(term in text for term in MALARIA_RELEVANCE_TERMS)
 
 
 def extract_signal_fields(study: dict[str, Any]) -> dict[str, Any]:
@@ -303,31 +325,37 @@ def main() -> None:
     locally_led_only = [row for row in enriched if row["leadership_bucket"] == "likely_locally_led"]
     locally_led_only.sort(key=lambda row: float(row["followup_priority_score"]), reverse=True)
 
-    write_csv(PROCESSED_DIR / "malaria_deep_dive.csv", enriched)
-    write_csv(PROCESSED_DIR / "malaria_local_or_mixed_priority.csv", local_or_mixed)
-    write_csv(PROCESSED_DIR / "malaria_locally_led_priority.csv", locally_led_only)
+    relevant_ids = {nct_id for nct_id, study in studies.items() if is_malaria_relevant(study)}
+    relevant_enriched = [row for row in enriched if row["nct_id"] in relevant_ids]
+    relevant_local_or_mixed = [row for row in local_or_mixed if row["nct_id"] in relevant_ids]
+    relevant_locally_led_only = [row for row in locally_led_only if row["nct_id"] in relevant_ids]
 
-    lead_counts = Counter(str(row["leadership_bucket"]) for row in enriched)
+    write_csv(PROCESSED_DIR / "malaria_deep_dive.csv", relevant_enriched)
+    write_csv(PROCESSED_DIR / "malaria_local_or_mixed_priority.csv", relevant_local_or_mixed)
+    write_csv(PROCESSED_DIR / "malaria_locally_led_priority.csv", relevant_locally_led_only)
+
+    lead_counts = Counter(str(row["leadership_bucket"]) for row in relevant_enriched)
     shortlist_rows = [row for row in enriched if row["in_transfer_shortlist"]]
-    shortlist_lead_counts = Counter(str(row["leadership_bucket"]) for row in shortlist_rows)
-    signal_counts = Counter(str(row["primary_signal_bucket"]) for row in enriched)
+    relevant_shortlist_rows = [row for row in shortlist_rows if row["nct_id"] in relevant_ids]
+    shortlist_lead_counts = Counter(str(row["leadership_bucket"]) for row in relevant_shortlist_rows)
+    signal_counts = Counter(str(row["primary_signal_bucket"]) for row in relevant_enriched)
 
     local_country_counts: Counter[str] = Counter()
-    for row in local_or_mixed[:20]:
+    for row in relevant_local_or_mixed[:20]:
         for country in str(row.get("africa_countries", "")).split("|"):
             country = country.strip()
             if country:
                 local_country_counts.update([country])
 
     top_local_lines = []
-    for row in locally_led_only[:10]:
+    for row in relevant_locally_led_only[:10]:
         top_local_lines.append(
             f"- {row['nct_id']}: {row['brief_title']} | {row['africa_countries']} | "
             f"priority {row['followup_priority_score']} | signal {row['primary_signal_bucket']}"
         )
 
     top_mixed_lines = []
-    for row in local_or_mixed[:10]:
+    for row in relevant_local_or_mixed[:10]:
         top_mixed_lines.append(
             f"- {row['nct_id']}: {row['brief_title']} | {row['leadership_bucket']} | "
             f"{row['africa_countries']} | priority {row['followup_priority_score']}"
@@ -336,18 +364,19 @@ def main() -> None:
     summary = [
         "# Malaria Deep Dive",
         "",
-        "This malaria-first layer adds two things on top of the existing benchmark:",
+        "This malaria-first layer adds two analytical layers on top of the existing benchmark and applies a topical validation pass to remove obvious off-topic registry hits:",
         "",
         "- structured primary-outcome signal extraction from `resultsSection`",
         "- a cautious leadership heuristic using sponsor names, investigator affiliations, and African site institutions",
         "",
         "## Coverage",
         "",
-        f"- Africa malaria benchmark studies: {len(enriched)}",
-        f"- Transfer shortlist studies: {len(shortlist_rows)}",
-        f"- Studies with structured primary analyses: {sum(int(row['primary_analysis_count']) > 0 for row in enriched)}",
-        f"- Studies with primary p-values: {sum(int(row['primary_pvalue_count']) > 0 for row in enriched)}",
-        f"- Studies with primary effect estimates or CIs: {sum((int(row['primary_effect_value_count']) > 0) or (int(row['primary_ci_count']) > 0) for row in enriched)}",
+        f"- Registry benchmark studies loaded: {len(enriched)}",
+        f"- Malaria-relevant studies after topical validation: {len(relevant_enriched)}",
+        f"- Transfer shortlist studies after topical validation: {len(relevant_shortlist_rows)}",
+        f"- Studies with structured primary analyses: {sum(int(row['primary_analysis_count']) > 0 for row in relevant_enriched)}",
+        f"- Studies with primary p-values: {sum(int(row['primary_pvalue_count']) > 0 for row in relevant_enriched)}",
+        f"- Studies with primary effect estimates or CIs: {sum((int(row['primary_effect_value_count']) > 0) or (int(row['primary_ci_count']) > 0) for row in relevant_enriched)}",
         "",
         "## Leadership Heuristic",
         "",
@@ -363,8 +392,8 @@ def main() -> None:
         "## What Looks Most Transferable",
         "",
         "- The strongest malaria pattern remains single-country, often single-site trials with moderate enrollment.",
-        f"- Countries most represented among the top local-or-mixed candidates: {format_counter(local_country_counts)}",
-        "- Local or mixed leadership gives a better template for African delivery models than lean but clearly external sponsor-led studies.",
+        f"- Countries most represented among the top topical-validated local-or-mixed candidates: {format_counter(local_country_counts)}",
+        "- Mixed local-site participation may be more operationally informative than clearly external sponsor-led studies, but the leadership split remains heuristic.",
         "",
         "## Top Likely Local Candidates",
         "",
@@ -380,7 +409,7 @@ def main() -> None:
         "",
         "## Caveat",
         "",
-        "A statistically significant primary result is not the same as real-world effectiveness, and the leadership split is an inference from registry metadata.",
+        "A statistically significant primary result is not the same as real-world effectiveness, the leadership split is an inference from registry metadata, and the deep-dive layer excludes obvious off-topic registry hits from the displayed candidate set.",
     ])
     (PROCESSED_DIR / "malaria_deep_dive_summary.md").write_text("\n".join(summary) + "\n", encoding="utf-8")
 
