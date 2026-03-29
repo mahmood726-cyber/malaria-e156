@@ -1,27 +1,24 @@
-# Submission Checklist For Malaria Journal
+# E156 Release Checklist
 
-- [x] Target journal chosen: `Malaria Journal`
-- [x] Article type chosen: `Research`
+- [x] Active paper kept in strict `E156` release mode
 - [x] E156 body validated locally
+- [x] Body length is exactly `156` words
+- [x] Body has exactly `7` sentences
+- [x] Body is a single paragraph
 - [x] HTML companion built locally
 - [x] Protocol draft present
 - [x] Data files copied into repo
 - [x] Code files copied into repo
-- [x] Journal-specific cover letter drafted
-- [x] Journal-specific title page drafted
-- [x] Structured abstract drafted
-- [x] Full manuscript draft structured to journal headings
-- [x] BMC-style declarations draft added
+- [x] E156 cover note drafted
+- [x] E156 title metadata drafted
+- [x] E156 abstract note drafted
+- [x] E156 manuscript wrapper drafted
 - [x] Additional-files plan drafted
 - [x] Public GitHub repository available for data and code linking
 - [ ] Final author list added
 - [ ] Affiliations, emails, and ORCIDs added
-- [ ] Corresponding author confirmed
 - [ ] Funding statement finalized by authors
 - [ ] Competing-interest statement finalized by authors
-- [ ] Generative-AI disclosure reviewed by authors
-- [ ] Reference list expanded if authors want a broader literature frame
-- [ ] Search archived on searchRxiv if authors want a citable search DOI
 - [ ] Zenodo or similar archive created if authors want a DOI for the repository
-- [ ] Final DOCX or LaTeX export prepared with line and page numbering
 - [ ] External read for wording and overclaim risk
+- [ ] Long-form journal expansion only if later requested

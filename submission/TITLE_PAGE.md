@@ -1,17 +1,17 @@
-# Title Page
+# Title Metadata
 
-## Journal And Article Type
+## Active Format
 
-- Journal: `Malaria Journal`
-- Article type: `Research`
+- Release mode: `E156 micro-paper`
+- Variant type: `prevalence`
 
-## Proposed Title
+## Title
 
-Registry-first operational scan of completed, results-posted Africa-site malaria randomized trials: identifying lean transfer templates for future trial delivery
+Lean Africa-site malaria RCTs as a transfer template
 
 ## Short Title
 
-Lean malaria RCT transfer templates in Africa
+Lean malaria RCT transfer template
 
 ## Authors
 
@@ -36,6 +36,6 @@ Lean malaria RCT transfer templates in Africa
 
 ## Administrative Notes
 
-- Abstract limit: `350` words maximum under current journal guidance
-- Initial submission format is flexible, but final upload should still use clean line and page numbering
-- Add funding, competing-interest, and AI-use disclosures before submission
+- Active paper body is exactly `156` words and `7` sentences
+- Note block and companion files sit outside the 156-word body count
+- Add funding and competing-interest disclosures if a later long-form expansion is requested

@@ -1,23 +1,13 @@
-# Structured Abstract For Malaria Journal
+# E156 Abstract Note
 
 ## Word Count
 
-`341`
+`156`
 
-## Abstract
+## Note
 
-### Background
+E156 release mode does not use a separate structured abstract. The active paper body itself is the abstract-sized publication unit and is reproduced below unchanged.
 
-African trial programs need examples of malaria randomized controlled trials that were completed and operationally simpler to run. Prior malaria literature has described many African malaria trials as medium-sized and single-centre, while recent priority-setting work has emphasized the need for operational evidence in sub-Saharan Africa. We aimed to identify completed, results-posted Africa-site malaria randomized trials that resemble lean transfer templates for future African RCT delivery.
+## Active Body
 
-### Methods
-
-We performed a registry-first cross-sectional analysis using the ClinicalTrials.gov API. We included completed interventional studies with randomized allocation, posted results, the focus term `malaria`, and at least one African study site. The primary estimand was the proportion of benchmark studies meeting a predefined transfer shortlist: enrollment `<=500`, location count `<=10`, country count `<=2`, and prospective registration. These cut points were pragmatic screening rules rather than validated cost thresholds. We summarized trial timing, sponsor class, country distribution, and malaria-specific deep-dive signals, and performed simple threshold sensitivity analyses.
-
-### Results
-
-The benchmark contained `80` completed, results-posted Africa-site studies, of which `27` met the primary shortlist, giving a proportion of `0.34` with `95% confidence interval 0.24 to 0.45`. Under a stricter rule (`<=300` participants, `<=5` sites, `1` country), the proportion was `0.18`; under a more lenient rule (`<=750`, `<=15`, `<=3`), it was `0.41`. Median enrollment was `424.0`, median trial duration was `619.0` days, and median results-reporting lag was `719.5` days. Kenya, Uganda, Mali, Burkina Faso, and Ghana were the most represented countries. In the malaria deep dive, `32/80` studies had structured primary analyses, `22/80` had primary p-values, and `28/80` had primary effect estimates or confidence intervals; no study was confidently classified as locally sponsor-led from registry metadata alone.
-
-### Conclusions
-
-A substantial minority of completed, results-posted Africa-site malaria randomized trials already resemble lean operational templates, especially prospectively registered single-country studies with moderate enrollment and simpler geographic footprints. Malaria appears to provide a practical starting point for African RCT program design, but the estimate depends on pragmatic shortlist rules, and registry metadata cannot directly measure true cost, effectiveness, or local intellectual leadership.
+In Africa-site malaria randomized trials registered on ClinicalTrials.gov, how often do studies meet a practical shortlist for cheaper and faster delivery? Eighty completed, results-posted malaria trials formed the Africa benchmark, and twenty-seven met pre-specified transfer shortlist criteria on enrollment, sites, countries, and prospective registration. We performed a registry-based descriptive scan, compared Africa-site records with a global benchmark, and treated the shortlist proportion as the primary estimand with Wilson intervals. The shortlist proportion was 0.34, with 95% confidence interval 0.24 to 0.45. Median results-reporting lag was 719.5 days, interquartile range 458.2 to 1373.0, while Kenya, Uganda, Mali, Burkina Faso, and Ghana dominated country representation. These findings suggest malaria offers the clearest near-term template for operationally lean African RCT programs, especially single-country studies with moderate enrollment and simpler footprints across routine African delivery settings. Interpretation is limited by registry proxies rather than true budget data, sparse result-linked publications, and mixed local-site versus external-sponsor leadership in the deep-dive sample.

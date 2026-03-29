@@ -1,22 +1,15 @@
-# Cover Letter Draft For Malaria Journal
+# E156 Cover Note
 
-Dear Editors,
+The active malaria paper is now maintained in strict `E156` release mode rather than as a long-form journal manuscript.
 
-Please consider our Research article, `Registry-first operational scan of completed, results-posted Africa-site malaria randomized trials: identifying lean transfer templates for future trial delivery`, for publication in `Malaria Journal`.
+Core release facts:
 
-This manuscript uses public ClinicalTrials.gov records to identify completed, results-posted malaria randomized trials with at least one African site and to estimate how often these benchmark studies resemble operationally lean templates for future African RCT delivery. In the benchmark set, `27` of `80` studies met the primary shortlist criteria for smaller operational footprint and prospective registration, corresponding to a proportion of `0.34` with `95% confidence interval 0.24 to 0.45`. Sensitivity checks produced proportions from `0.18` under a stricter rule to `0.41` under a more lenient rule, which we report explicitly to avoid overclaiming precision. A malaria-specific deep dive further showed that the most transferable examples were more often mixed African-site and external-sponsor studies than clearly locally sponsored studies in registry metadata alone.
+- validated body length: `156` words
+- sentence count: `7`
+- body form: single paragraph
+- primary estimand: proportion of Africa-site trials meeting the transfer shortlist
+- companion assets: interactive HTML bundle, local CSV outputs, and reproducibility code
 
-We believe the manuscript is a strong fit for `Malaria Journal` because the journal explicitly covers malaria operational research, intervention studies, and health-system or planning questions. The submission also includes a public reproducibility package with the analyzed CSV outputs, code used to generate the benchmark, a concise E156 summary, and a protocol-style methods companion.
+The exact release body is stored in `paper/article.json`, mirrored in `paper/e156_body.md`, and wrapped for submission use in `submission/MANUSCRIPT.md`.
 
-Before submission, the corresponding author should confirm the standard publication statements below in the submission system and final cover letter:
-
-- the manuscript is original and not under consideration elsewhere
-- all listed authors have read and approved the submitted version
-- funding and competing-interest statements are complete and accurate
-- author names, affiliations, emails, and ORCIDs are finalized
-
-Sincerely,
-
-`[Corresponding author name]`  
-`[Institution]`  
-`[Email]`
+If a conventional journal submission is needed later, expand from the validated E156 body and companion artifacts rather than changing the active release paper.

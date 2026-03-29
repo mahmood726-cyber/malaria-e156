@@ -8,8 +8,8 @@
 - Protocol draft tightened
 - Local git repository initialized
 - Public GitHub repository created
-- Target journal selected
-- Journal-specific title page, abstract, manuscript draft, declarations, and cover letter added
+- Active manuscript aligned to strict E156 release mode
+- E156-facing title metadata, abstract note, manuscript wrapper, and checklist added
 
 ## Still Needed
 
@@ -17,8 +17,8 @@
 - ORCIDs and corresponding-author details
 - funding and competing-interest statements finalized by authors
 - DOI and archive metadata if desired
-- final literature polish and external read for overclaim risk
-- DOCX export with line and page numbering for upload
+- external read for wording and overclaim risk
+- long-form journal expansion only if later requested
 
 ## Current Version
 

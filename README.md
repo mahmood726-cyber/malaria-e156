@@ -15,11 +15,11 @@ The primary descriptive question is how often Africa-site trials in this topic m
 - Median results-reporting lag days: `719.5`
 - Most represented Africa-site countries: Kenya (22), Uganda (18), Mali (17), Burkina Faso (16), Ghana (11)
 
-## Submission Track
+## Release Track
 
-- Primary target journal: `Malaria Journal` as a `Research` article
-- Backup target journal: `Trials` if the manuscript is judged too methods-oriented for a malaria-only venue
-- Journal-specific submission files live in `submission/`
+- Active paper format: `E156 micro-paper`
+- Active paper body: exactly `156` words, `7` sentences, single paragraph
+- Conventional journal expansion is deferred unless explicitly requested
 
 ## Layout
 
@@ -28,7 +28,7 @@ The primary descriptive question is how often Africa-site trials in this topic m
 - `data/`: copied topic outputs from the parent analysis project
 - `code/`: local scripts needed to rerun validation and rebuild the bundle
 - `.github/workflows/`: lightweight validation workflow for GitHub-hosted use
-- `submission/`: journal-specific cover letter, abstract, title page, manuscript draft, declarations, and checklist
+- `submission/`: E156-facing manuscript wrapper, title metadata, note files, and expansion notes
 - `STATUS.md`: current completion state and remaining gaps
 
 ## Quick Start
@@ -52,4 +52,4 @@ python3 code/build_e156_bundle.py --input paper/article.json --output paper/inde
 - Protocol tightened beyond the initial skeleton
 - Local git repo initialized
 - Public GitHub repository is live at `https://github.com/mahmood726-cyber/malaria-e156`
-- Journal-specific submission package drafted for `Malaria Journal`
+- Active submission package aligned to strict `E156` release mode
