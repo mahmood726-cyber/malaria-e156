@@ -13,10 +13,10 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
-RAW_DIR = ROOT / "data" / "raw" / "malaria"
-PROCESSED_DIR = ROOT / "data" / "processed" / "malaria"
-AFRICA_BENCHMARK = PROCESSED_DIR / "africa_benchmark.csv"
-AFRICA_SHORTLIST = PROCESSED_DIR / "africa_transfer_shortlist.csv"
+PROJECT_RAW_DIR = ROOT / "data" / "raw" / "malaria"
+REPO_RAW_DIR = ROOT / "data" / "raw" / "malaria"
+PROJECT_PROCESSED_DIR = ROOT / "data" / "processed" / "malaria"
+REPO_DATA_DIR = ROOT / "data"
 
 AFRICAN_COUNTRIES = {
     "Algeria", "Angola", "Benin", "Botswana", "Burkina Faso", "Burundi",
@@ -59,9 +59,26 @@ def read_csv(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(handle))
 
 
+def resolve_layout() -> tuple[Path, Path, Path, Path]:
+    if PROJECT_PROCESSED_DIR.exists():
+        return (
+            PROJECT_RAW_DIR,
+            PROJECT_PROCESSED_DIR,
+            PROJECT_PROCESSED_DIR / "africa_benchmark.csv",
+            PROJECT_PROCESSED_DIR / "africa_transfer_shortlist.csv",
+        )
+    return (
+        REPO_RAW_DIR,
+        REPO_DATA_DIR,
+        REPO_DATA_DIR / "africa_benchmark.csv",
+        REPO_DATA_DIR / "africa_transfer_shortlist.csv",
+    )
+
+
 def load_studies() -> dict[str, dict[str, Any]]:
     by_nct: dict[str, dict[str, Any]] = {}
-    for path in sorted(RAW_DIR.glob("africa_*.json")):
+    raw_dir, _, _, _ = resolve_layout()
+    for path in sorted(raw_dir.glob("africa_*.json")):
         payload = json.loads(path.read_text(encoding="utf-8"))
         for study in payload.get("studies", []):
             nct_id = study.get("protocolSection", {}).get("identificationModule", {}).get("nctId")
@@ -93,24 +110,27 @@ def parse_pvalue(value: Any) -> float | None:
     return parse_float(text)
 
 
-def study_topic_text(study: dict[str, Any]) -> str:
+def study_topic_text(study: dict[str, Any], include_descriptions: bool = False) -> str:
     protocol = study.get("protocolSection", {})
     ident = protocol.get("identificationModule", {})
     conditions = protocol.get("conditionsModule", {})
-    descriptions = protocol.get("descriptionModule", {})
-    text = " ".join([
+    text_parts = [
         ident.get("briefTitle", ""),
         ident.get("officialTitle", ""),
         " ".join(conditions.get("conditions") or []),
         " ".join(conditions.get("keywords") or []),
-        descriptions.get("briefSummary", ""),
-        descriptions.get("detailedDescription", ""),
-    ])
-    return normalize(text)
+    ]
+    if include_descriptions:
+        descriptions = protocol.get("descriptionModule", {})
+        text_parts.extend([
+            descriptions.get("briefSummary", ""),
+            descriptions.get("detailedDescription", ""),
+        ])
+    return normalize(" ".join(text_parts))
 
 
 def is_malaria_relevant(study: dict[str, Any]) -> bool:
-    text = study_topic_text(study)
+    text = study_topic_text(study, include_descriptions=False)
     return any(term in text for term in MALARIA_RELEVANCE_TERMS)
 
 
@@ -298,8 +318,9 @@ def format_counter(counter: Counter[str], limit: int = 5) -> str:
 
 
 def main() -> None:
-    benchmark_rows = read_csv(AFRICA_BENCHMARK)
-    shortlist_ids = {row["nct_id"] for row in read_csv(AFRICA_SHORTLIST)}
+    _, processed_dir, africa_benchmark, africa_shortlist = resolve_layout()
+    benchmark_rows = read_csv(africa_benchmark)
+    shortlist_ids = {row["nct_id"] for row in read_csv(africa_shortlist)}
     studies = load_studies()
 
     enriched: list[dict[str, Any]] = []
@@ -330,9 +351,9 @@ def main() -> None:
     relevant_local_or_mixed = [row for row in local_or_mixed if row["nct_id"] in relevant_ids]
     relevant_locally_led_only = [row for row in locally_led_only if row["nct_id"] in relevant_ids]
 
-    write_csv(PROCESSED_DIR / "malaria_deep_dive.csv", relevant_enriched)
-    write_csv(PROCESSED_DIR / "malaria_local_or_mixed_priority.csv", relevant_local_or_mixed)
-    write_csv(PROCESSED_DIR / "malaria_locally_led_priority.csv", relevant_locally_led_only)
+    write_csv(processed_dir / "malaria_deep_dive.csv", relevant_enriched)
+    write_csv(processed_dir / "malaria_local_or_mixed_priority.csv", relevant_local_or_mixed)
+    write_csv(processed_dir / "malaria_locally_led_priority.csv", relevant_locally_led_only)
 
     lead_counts = Counter(str(row["leadership_bucket"]) for row in relevant_enriched)
     shortlist_rows = [row for row in enriched if row["in_transfer_shortlist"]]
@@ -411,7 +432,7 @@ def main() -> None:
         "",
         "A statistically significant primary result is not the same as real-world effectiveness, the leadership split is an inference from registry metadata, and the deep-dive layer excludes obvious off-topic registry hits from the displayed candidate set.",
     ])
-    (PROCESSED_DIR / "malaria_deep_dive_summary.md").write_text("\n".join(summary) + "\n", encoding="utf-8")
+    (processed_dir / "malaria_deep_dive_summary.md").write_text("\n".join(summary) + "\n", encoding="utf-8")
 
 
 if __name__ == "__main__":
