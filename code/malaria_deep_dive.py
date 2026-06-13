@@ -102,11 +102,19 @@ def parse_pvalue(value: Any) -> float | None:
     text = str(value).strip().lower()
     text = text.replace("p", "").replace("=", "").strip()
     if text.startswith("<"):
+        # "p<0.05" -> the true p is below the bound; the bound is a conservative
+        # (largest possible) value, so returning it keeps a `<= threshold` test correct.
         parsed = parse_float(text[1:].strip())
         return parsed if parsed is not None else None
     if text.startswith(">"):
+        # "p>0.05" means the true p is strictly above the bound, so it must NOT be
+        # treated as significant at that bound. Returning the bound itself would make
+        # a `<= 0.05` significance test wrongly fire for ">0.05". Nudge just above the
+        # bound so significance tests and min() both reflect "greater than the bound".
         parsed = parse_float(text[1:].strip())
-        return parsed if parsed is not None else None
+        if parsed is None:
+            return None
+        return parsed + 1e-9 if parsed >= 0 else parsed
     return parse_float(text)
 
 

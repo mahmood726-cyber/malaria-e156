@@ -23,7 +23,7 @@ These leadership labels are heuristics, not definitive authorship or funding adj
 
 ## Primary Signal Buckets
 
-- no_primary_analysis_structured (40), effect_estimate_no_significance (16), effect_estimate_with_significance (9), analysis_reported_no_numeric_signal (3), significant_pvalue_only (1)
+- no_primary_analysis_structured (40), effect_estimate_no_significance (16), effect_estimate_with_significance (9), analysis_reported_no_numeric_signal (4)
 
 ## What Looks Most Transferable
 
